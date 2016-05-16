@@ -1,0 +1,432 @@
+<?php
+module_load_include('inc','pi_wf','pi_user');
+module_load_include('inc','pi_wf','pi_iskola');
+module_load_include('inc','pi_wf','pi_eredmeny');
+module_load_include('inc','pi_wf','pi_teszt');
+module_load_include('inc','pi_wf','pi_kk');
+
+function pi_wf_menu(){
+  $items=array();
+  $items['eredmeny/nid/%/sid/%'] = array(
+    'title' => 'Eredmény',
+    'description' => 'A beküldött összegek kiértékelése.',
+    'page callback' => '_pi_wf_eredmeny',
+    'page arguments' => array(2,4),
+    //'access callback' => '',
+    'access arguments' => array('access content'),
+    //'file' => 'menu.admin.inc',
+	  'type' => MENU_CALLBACK,
+	);
+  $items['jatek/oktober/szovegek']=array(
+    'title' => 'Októberi játék szövegei',
+    'description' => 'Októberi játék szövegei.',
+    'page callback' => '_pi_wf_oktoberi_jatek_valaszok',
+    //'page arguments' => array(1),
+    'access arguments' => array('access content'),
+	  'type' => MENU_CALLBACK,
+  );
+	$items['iskola/%']=array(
+    'title' => 'Szűrt iskolák',
+    'description' => 'Iskolák szűrése.',
+    'page callback' => '_pi_wf_iskola_filter',
+    'page arguments' => array(1),
+    //'access callback' => '_pi_wf_iskola_access',
+    'access arguments' => array('access iskola'),
+	  'type' => MENU_CALLBACK,
+	);
+  $items['iskola/om/%']=array(
+    'title' => 'Iskola adatai',
+    'description' => 'Egy iskola visszaadása.',
+    'page callback' => '_pi_wf_iskola_search',
+    'page arguments' => array(2),
+    'access arguments' => array('access iskola'),
+	  'type' => MENU_CALLBACK,
+  );
+  $items['iskola/full/%']=array(
+    'title' => 'Az összes iskola adatai',
+    'description' => 'Az összes iskola visszaadása ok kódra.',
+    'page callback' => '_pi_wf_iskolak_full_ajax',
+    'page arguments' => array(2),
+    'access arguments' => array('access iskola'),
+	  'type' => MENU_CALLBACK,
+  );
+  $items['fenntarto/%']=array(
+    'title' => 'Fenntartő adatai',
+    'description' => 'Egy fenntarto visszaadása.',
+    'page callback' => '_pi_wf_fenntarto_search',
+    'page arguments' => array(1),
+    'access arguments' => array('access iskola'),
+	  'type' => MENU_CALLBACK,
+  );
+  $items['irszam/%']=array(
+    'title' => 'Helység adatai',
+    'description' => 'Egy helyseg visszaadása.',
+    'page callback' => '_pi_wf_irszam_search',
+    'page arguments' => array(1),
+    'access arguments' => array('access iskola'),
+	  'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+function pi_wf_form_alter(&$form, &$form_state,$form_id){
+  $teszt=0;
+  if ($teszt){
+    $form['formnev']=array(
+      '#type'=>'markup',
+      '#markup'=>$form_id,
+    );
+  }
+  global $user;
+  $path=drupal_get_path('module','pi_wf');
+  switch ($form_id){
+    case 'webform_client_form_7':  //Mennyit fogsz ma költeni
+      $form['#attached']['js'][] =$path.'/autoNumeric.js';
+      $form['#attached']['js'][] =$path.'/autoNumericSetup.js';
+      break;
+    case 'webform_client_form_8':   //Pénznyelők
+      $form['#attached']['js'][] =$path.'/autoNumeric.js';
+      $form['#attached']['js'][] =$path.'/autoNumericSetup.js';
+      $form['#attached']['js'][] =$path.'/penznyelok.js';
+      $form['#attached']['js'][] =$path.'/penznyelok_matrix.js';
+      unset($form['actions']['submit']);
+      break;
+    case 'webform_client_form_22':  //Sacc per kábé
+      $form['#attached']['js'][] =$path.'/autoNumeric.js';
+      $form['#attached']['js'][] =$path.'/autoNumericSetup.js';
+      break;
+    case 'webform_client_form_36':  //Mennyit költöttél ma?
+      //dpm($form);
+      $form['#attached']['js'][] =$path.'/autoNumeric.js';
+      $form['#attached']['js'][] =$path.'/autoNumericSetup.js';
+      if (isset($_GET['jatek'])){
+        $form['submitted']['jatek']['#attributes']['disabled']='disabled';
+      }
+      if (isset($_GET['tipp'])){
+        $form['submitted']['tipp']['#attributes']['disabled']='disabled';
+      }
+      break;
+    case 'webform_client_form_37':  //Miről árulkodik a pénztárcád?
+      //beküldés gomb nem kell
+      unset($form['actions']['submit']);
+      break;
+    case 'webform_client_form_94':  //Pénzügyi személyiségteszt
+      if (isset($form['actions']['next'])){
+        $form['actions']['next']['#type'] = 'image_button';
+	      $form['actions']['next']['#src'] = base_path() . 'sites/default/files/form/mehet_gomb.png';
+	      $form['actions']['next']['#name'] = 'op';
+	    }
+      if (isset($form['actions']['submit'])){
+        $form['actions']['submit']['#type'] = 'image_button';
+	      $form['actions']['submit']['#src'] = base_path() . 'sites/default/files/form/eredmeny_gomb.png';
+	      $form['actions']['submit']['#name'] = 'op';
+	    }
+      break;
+    case 'webform_client_form_135':  //Igazgatói regisztráció
+      $form['#attached']['js'][] =$path.'/igazgatoi_reg.js';
+      break;
+    case 'webform_client_form_148': //Tanári regisztráció
+      $form['#attached']['js'][] =$path.'/igazgatoi_reg.js';
+      break;
+    case 'webform_client_form_162': //Intézmény regisztráció
+      dpm($form,'pi_wf_form_alter:form');
+      dpm($form_state,'pi_wf_form_alter:form_state');
+      $form['#attached']['js'][] =$path.'/igazgatoi_reg.js';
+      _pi_iskola_szurt_reg($form);
+      dpm($form,'pi_wf_form_alter:form:after');
+      dpm($form_state,'pi_wf_form_alter:form_state:after');
+    case 'webform_client_form_167': //Októberi játék
+      //dpm($form,'pi_wf_form_alter:form');
+      //dpm($form_state,'pi_wf_form_alter:form_state');
+      $form['#attached']['js'][] =$path.'/oktoberi_jatek.js';      
+      break;
+    case 'webform_client_form_169': //Iskolai adatok
+      $form['#attached']['js'][] =$path.'/iskolai_adatok.js';
+      break;
+    case 'webform_client_form_178': //Októberi játék 1
+    case 'webform_client_form_176': //Októberi játék 2
+    case 'webform_client_form_177': //Októberi játék 3
+      //dpm($form,'pi_wf_form_alter:form');
+      //dpm($form_state,'pi_wf_form_alter:form_state');
+      $form['#attached']['js'][] =$path.'/oktoberi_jatek1.js';    
+    case 'webform_client_form_171': //Iskolai adatok
+      $form['#attached']['js'][] =$path.'/fenntartoi_adatok.js';
+      break;
+    case 'webform_client_form_172': //Irányítószám
+      $form['#attached']['js'][] =$path.'/irszam.js';
+      break;
+    case 'webform_client_form_208':    //Mennyi marad a zsebedben?
+      //$form['#attached']['js'][] =$path.'/autoNumeric.js';
+      //$form['#attached']['js'][] =$path.'/autoNumericSetup.js';
+      $form['#attached']['js'][] =$path.'/mennyi_marad_a_zsebedben_tombok.js';
+      $form['#attached']['js'][] =$path.'/mennyi_marad_a_zsebedben.js';
+      unset($form['actions']['submit']);
+      break;
+    case 'user_profile_form':
+      dpm($form,'pi_wf_form_alter:form');
+      dpm($form_state,'pi_wf_form_alter:form_state');
+      break;
+  }
+}
+
+function pi_wf_webform_submission_presave($node, &$submission) {
+  dpm($node,'pi_wf_webform_submission_presave:node');
+  dpm($submission,'pi_wf_webform_submission_presave:submission');
+  switch($node->nid){
+    case 135: //ig.reg
+      if (isset($submission->data[4][0]) and $submission->data[4][0] and isset($submission->data[11][0]) and $submission->data[11][0]){
+        $user=array(
+          'loginnev'=>$submission->data[4][0],
+          'email'=>$submission->data[11][0],
+        );
+        _pi_wf_create_user($user,'igazgató');
+        $account=user_load_by_mail($submission->data[11][0]);
+        if (!empty($account)){
+          $nid=($submission->data[32][0]==2 ? 154 : 155); //vállal 5-öt|nem vállal
+          _pi_wf_send_mail_reg($nid,$user['email']);
+          drupal_set_message('Sikerült a regisztráció!');
+        } else {
+          drupal_set_message('Nem sikerült a regisztráció!');
+        }
+      } else {
+        drupal_set_message('Nincs megadva a loginnév vagy az e-mailcím, nem sikeres a regisztráció!');
+      }      
+      break;
+    case 148: //tan.reg
+      $tagja=false;
+      if (isset($submission->data[5][0])){
+        $om_azonosito=$submission->data[5][0];
+        $result=_pi_wf_iskola_search_om($om_azonosito);
+        dpm($result,'pi_wf_webform_submission_presave:result');
+        if (isset($result->regisztralt)){
+           $tagja=($result->regisztralt=='1');
+        }
+        if (isset($submission->data[48][0]) and $submission->data[48][0] and isset($submission->data[49][0]) and $submission->data[49][0]){
+          $user=array(
+            'loginnev'=>$submission->data[48][0],
+            'email'=>$submission->data[49][0],
+          );
+          if ($tagja){
+            _pi_wf_create_user($user,'tanár');
+            $nid=159;
+            _pi_wf_send_mail_reg($nid,$user['email']);
+            //levél az igazgatónak,hogy regelt
+            $email=_pi_wf_ig_email($om_azonosito);
+            $nid=201;
+            $tanar=$submission->data[45][0];
+            _pi_wf_send_mail_reg($nid,$email,$tanar);
+            drupal_set_message('Sikerült a regisztráció!');
+          } else {
+            $nid=160;
+            _pi_wf_send_mail_reg($nid,$user['email']);
+            drupal_set_message('Nem sikerült a regisztráció, mert az Ön iskolája nem tagja az iskolahálózatnak!');
+          }
+        } else {
+          drupal_set_message('Nincs megadva a loginnév vagy az e-mailcím, nem sikeres a regisztráció!');
+        }
+      }
+      break;
+    case 162: //Intézmény regisztráció
+      $om_azonosito=$submission->data[5][0];
+      _pi_wf_iskola_reg($om_azonosito);
+      //levél igazgatónak,hogy regeltük az iskolát
+      $nid=163;
+      $email=_pi_wf_ig_email($om_azonosito);
+      _pi_wf_send_mail_reg($nid,$email);
+      //levél a tanároknak,hogy regeljen
+      _pi_wf_level_tanaroknak($submission);
+      break;
+    case 169: //Iskolai adatok
+      _pi_wf_uj_iskola($submission->data);
+      break;
+    case 171: // 	Fenntartói adatok
+      _pi_wf_uj_fenntarto($submission->data);
+      break;
+    case 172: //irszam
+      $irszam=$submission->data[1][0];
+      $helyseg=$submission->data[2][0];
+      _pi_wf_uj_irszam($irszam,$helyseg);
+      break;
+    case 208: //Mennyi marad a zsebedben?
+      break;
+  }
+}
+
+function _pi_wf_mailheader(){
+  $headers = array(
+    'MIME-Version' => '1.0',
+    'Content-Type' => 'text/html; charset=UTF-8; format=flowed',
+    'Content-Transfer-Encoding' => '8Bit',
+    'X-Mailer' => 'Drupal',
+    'From' => variable_get('site_mail')
+  );
+  return $headers;
+}
+
+function _pi_wf_req_o(){
+  require_once('ExampleMailSystem.class.php');
+  variable_get('mail_sytem',setVariableMailSystem());
+}
+
+function _pi_wf_teszt_email($arr=array()){
+  $headers=_pi_wf_mailheader();
+  global $base_url;
+  $dev=(substr($base_url,7,4)=='dev.');
+  $path=drupal_get_path('module','pi_wf');
+  _pi_wf_req_o();
+  $module='pi_wf';
+  $hol='itt';
+  $level=_pi_wf_load_template(161);
+  $body=$level['body'];
+  $body=str_replace('[url]',$base_url,$body);
+  $body=($dev ? 'DEV!!!!' : 'ÉLES!!!!').'=>SZÖVEG:<br>'.$body.'<br>SZÖVEG VÉGE';
+  $from=variable_get('site_mail');
+  dpm($from);
+  $arr[]='barczi.jozsef@aiee.eu';
+  foreach($arr as $to){
+    $mail=drupal_mail(
+      $module,
+      $hol,
+      $to,
+      language_default(),
+      array(
+        'body'=>$body,
+        'subject'=>"teszt ímél( $base_url )",
+        'headers'=>$headers
+      ),
+      $from
+    );
+    dpm($mail);
+  }
+}
+
+function _pi_wf_load_template($nid=161){
+  dpm($nid,'_pi_wf_load_template:nid');
+  $v=array();
+  $lang='hu';
+  $body='';
+  $subject='';
+  $node=node_load($nid);
+  if ($node){
+    dpm($node,'_pi_wf_load_template:node');
+    if (isset($node->body[$lang][0]['value'])){
+      $body=$node->body[$lang][0]['value'];
+    } elseif (isset($node->body['und'][0]['value'])){
+      $body=$node->body['und'][0]['value'];
+    }
+    if (isset($node->field_targy[$lang][0]['value'])){
+      $subject=$node->field_targy[$lang][0]['value'];
+    } elseif (isset($node->field_targy['und'][0]['value'])){
+      $subject=$node->field_targy['und'][0]['value'];
+    }
+    dpm($subject,'_pi_wf_load_template:subject');
+    dpm($body,'_pi_wf_load_template:body');
+    $v=array('body'=>$body,'subject'=>$subject);
+  }
+  return $v;
+}
+
+function pi_wf_mail($key,&$message,$params=array()){
+  switch($key){
+    case 'reg':
+    case 'itt':
+      $message['subject']=$params['subject'];
+      $message['body'][]=$params['body'];
+      $message['headers']=$params['headers'];
+      //dpm($message);
+      break;
+  }
+}
+
+function _pi_wf_load_valasz($nid){
+  $node=node_load($nid);
+  $lang='hu';
+  if (isset($node->body[$lang][0]['value'])){
+    $body=$node->body[$lang][0]['value'];
+  } elseif (isset($node->body['und'][0]['value'])){
+    $body=$node->body['und'][0]['value'];
+  }
+  $x=array();
+  $arr=explode("\r\n",$body);
+  foreach($arr as $sor){
+    $x[]=explode(';',$sor);
+  }
+  return $x;
+}
+
+
+function _pi_wf_send_mail_reg($nid,$email,$tanar=null){
+  global $base_url;
+  $account=user_load_by_mail($email);
+  _pi_wf_req_o();
+  $path=drupal_get_path('module','pi_wf');
+  $module='pi_wf';
+  $hol='reg';
+  $headers=_pi_wf_mailheader();
+  $headers['From']=$headers['Sender']=$headers['Return-Path']='iskolahalozat@penziranytu.hu';
+  $tokens=array('[user:one-time-login-url]','[tanar_neve]');
+  $csere=array(user_pass_reset_url($account),$tanar);
+  /*
+  $arr=array(    
+    152=>'ig_reg_tanar',
+    154=>'ig_reg_vállal 5-öt',
+    155=>'ig_reg_nem vállal 5-öt',
+    159=>'tanár_reg_ha az iskola tagja a hálózatnak',
+    160=>'tanár_reg_ha az iskola nem tagja a hálózatnak',
+    163=>'ig_reg_megerősítés',
+    201=>"Igazgatót értesítjük arról, hogy iskolájához regisztrálna egy tanár"
+  );
+   * 
+   */
+  $level=_pi_wf_load_template($nid);
+  $body=$level['body'];
+  $subject=$level['subject'];
+  // tokencsere
+  dpm($body,'_pi_wf_send_mail_reg:body');
+  //$body=token_replace($body,array('user'=>$account));
+  //dpm($body,'_pi_wf_send_mail_reg:body after token_replace');
+  $body=str_replace($tokens,$csere,$body);
+  dpm($body,'_pi_wf_send_mail_reg:body after inside replace');
+  //$mail='címzett:'.$email.',tárgy:'.$subject.'<br />'.$body;
+  
+  $mail=drupal_mail(
+    'pi_wf',
+    $hol,
+    $email,
+    language_default(),
+    array(
+      'body'=>$body,
+      'subject'=>$subject,
+      'headers'=>$headers,      
+    ),
+    //variable_get('site_mail')
+    'iskolahalozat@penziranytu.hu'
+  );
+  dpm($mail,'_pi_wf_send_mail_reg:mail');
+}
+
+//ajax
+function _pi_wf_oktoberi_jatek_valaszok(){
+  $nid=168;
+  $arr=_pi_wf_load_valasz($nid);
+  //dpm($arr);
+  $z=array();
+  $w=array();
+  foreach($arr as $sor){
+    if ($sor[0]>10){
+      $lap=substr($sor[0],0,1);
+      $ssz=substr($sor[0],1);
+      $z[$lap][$ssz]=array('valasz'=>$sor[1],'indok'=>$sor[2]);
+    } else {
+      $w[$sor[0]][]=array('vizsgalat'=>$sor[1],'ertek'=>$sor[2]);
+    }
+  }
+  $y=array('valaszok'=>$z,'kiertekeles'=>$w);
+  $y=json_encode($y);
+  header('Content-Type: application/json');
+  echo $y;
+  exit;
+  //return '_pi_wf_oktoberi_jatek_valaszok:'.print_r($y;);
+}
+
+

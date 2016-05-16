@@ -1,0 +1,30 @@
+(function($){
+  $(document).ready(function() {
+    $('#oldal_2,#oldal_3,#oldal_4,#lablec').hide();
+    $('#tovabb_2').click(function(){
+      $('#bevezeto,#oldal_1').hide();
+      $('#oldal_2').show();
+    });
+    $('#tovabb_3').click(function(){
+      $('#oldal_2').hide();
+      $('#oldal_3').show();
+    });
+    $('#tovabb_4').click(function(){
+      $('#oldal_3').hide();
+      $('#oldal_4,#lablec').show();
+    });
+    $('#vissza_1').click(function(){
+      $('#bevezeto,#oldal_1').show();
+      $('#oldal_2').hide();
+    });
+    $('#vissza_2').click(function(){
+      $('#oldal_2').show();
+      $('#oldal_3').hide();
+    });
+    $('#vissza_3').click(function(){
+      $('#oldal_3').show();
+      $('#oldal_4,#lablec').hide();
+    });
+  });
+})(jQuery);
+
