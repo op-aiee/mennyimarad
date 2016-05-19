@@ -80,7 +80,7 @@
           var szam=Math.ceil(Math.random()*3);
           var szamertek=aSz[nap][1+szam];
           szamertek_elozo=szamertek;
-          $('#szoveg').html('<p>'+sz.replace('<szam>','<span class="auto">'+szamertek+'</span>')+'</p>');
+          $('#szoveg').html('<img class="napikon" src="/sites/default/files/jatekok/mennyimarad/napok/mezo'+nap+'.png"/>'+'<p class"napitext">'+sz.replace('<szam>','<span class="auto">'+szamertek+'</span>')+'</p>');
         } 
       }
     });

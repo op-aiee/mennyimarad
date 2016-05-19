@@ -35,5 +35,3 @@ var aV={
 10:'Ragadd meg az alkalmat, és még mielőtt eltennéd magad holnapra, igazítsd ki a költségvetési terved! Aggasztóan kevés van az egyik zsebben és túl sok a másikban? Most korrigálhatsz.',
 20:'A vonaton ülve jutott egy kis időd a pénzügyeid áttekintésére. Ha szeretnéd, most ismét kiigazíthatod a költségvetési terved!'
 };
-
-
