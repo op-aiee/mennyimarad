@@ -30,12 +30,8 @@
         $('#jatek_leiras').hide();
         $('fieldset.webform-component--tabla').show();
         $('fieldset.webform-component--tabla--jatekter').hide();
+        $('div.webform-component--tabla--kasszak--kassza-leiras').text(aV[0]);
       } else {
-        if (nap==31){
-          alert('A játéknak vége! Gratulálunk, sikeresen teljesítetted a feladatot!');          
-          window.location.href ='/mennyi-marad-zsebedben';
-          return;
-        }
         //bábu kiírás
         $('#babu').css('position','absolute').css('top',813).css('left',26+(nap-1)*26);
         if (nap>1 && beker<2){
@@ -48,9 +44,11 @@
             fizetes+=szamertek;
             $('#edit-submitted-tabla-kasszak-fizetes').val(fizetes);
             $('fieldset.webform-component--tabla--jatekter').hide();
+            $('div.webform-component--tabla--kasszak--kassza-leiras').text(aV[0]);
             beker=1;
           } else if (((nap-1) % 10)==0){
             $('fieldset.webform-component--tabla--jatekter').hide();
+            $('div.webform-component--tabla--kasszak--kassza-leiras').text(aV[nap-1]);
             beker=1;
           } else {
             if (kasszaertek-szamertek>=0){
@@ -68,6 +66,11 @@
           }
         } else {
           beker=0;
+        }
+        if (nap==31){
+          alert('A játéknak vége! Gratulálunk, sikeresen teljesítetted a feladatot!');          
+          window.location.href ='/mennyi-marad-zsebedben';
+          return;
         }
         if (beker==0){
           $('fieldset.webform-component--tabla--jatekter').show();
