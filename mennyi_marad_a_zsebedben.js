@@ -33,7 +33,7 @@
         $('div.webform-component--tabla--kasszak--kassza-leiras').text(aV[0]);
       } else {
         //bábu kiírás
-        $('#babu').css('position','absolute').css('top',813).css('left',26+(nap-1)*26);
+        $('#babu').css('position','absolute').css('top',1610).css('left',247+(nap-1)*60);
         if (nap>1 && beker<2){
           var fizetes=parseInt($('#edit-submitted-tabla-kasszak-fizetes').val());
           var kasszassz=aSz[nap-1][0];
