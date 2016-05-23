@@ -74,7 +74,7 @@
         }
         if (beker==0){
           $('fieldset.webform-component--tabla--jatekter').show();
-          $('#nap').text(nap);
+          $('#nap').text(nap).html('<img src="/sites/default/files/jatekok/mennyimarad/gamebg/gamebg'+nap+'.png"/>');
           //szöveg
           var sz=aSz[nap][1];
           var szam=Math.ceil(Math.random()*3);
