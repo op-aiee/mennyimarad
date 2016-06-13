@@ -28,10 +28,14 @@ var aSz={
 27:[1,'Ma egész nap nem volt egy szabad perced a normális étkezésre, az aluljárós büfében vásárolt három szendvics viszont <szam> forintba került.',1000,1000,1000],
 28:[1,'Egész nap gyönyörű idő van, úgyhogy barátaiddal kiruccantok kicsit kirándulni. Hazafelé egy étteremben vacsoráztok. A számlából <szam> forint a rád eső rész.',2500,3000,4000],
 29:[2,'Már kezdted azt hinni, valamiért ebben a hónapban megkímélnek a villanyszámlától, de ma kiderült, hogy egyszerűen nem nézted át eléggé a leveleidet. Sajnos ott van, aminek ott kell lenni. A csekken <szam> forint szerepel.',6000,7000,8000],
-30:[4,'Itt a hónap utolsó napja, hamarosan fizetés, ezt a rövid időt már fél lábon is kibírom” – szuggerálod magad, miközben munkahelyeden lévő falióra másodpercmutatóját figyeled. Egy kattanás, még egy, s a következőnél bekattan, hogy tegnap volt nagymamád születésnapja. Ha viszel neki egy szeletet a kedvenc tortájából, biztos nem haragszik meg! Az egész mindössze <szam> forint, de vajon maradt-e még annyi a zsebedben?',400,500,600]
+30:[4,'"Itt a hónap utolsó napja, hamarosan fizetés, ezt a rövid időt már fél lábon is kibírom” – szuggerálod magad, miközben munkahelyeden lévő falióra másodpercmutatóját figyeled. Egy kattanás, még egy, s a következőnél bekattan, hogy tegnap volt nagymamád születésnapja. Ha viszel neki egy szeletet a kedvenc tortájából, biztos nem haragszik meg! Az egész mindössze <szam> forint, de vajon maradt-e még annyi a zsebedben?',400,500,600]
 };
 var aV={
 0:'Dönts a legjobb belátásod szerint, és oszd szét a fizetésed az öt kategória közt! Ne feledd: ha olyan kiadásod keletkezik, amit nem tudsz kifizetni a megfelelő zsebből, és még a megtakarításod is kevés a tartozás rendezéséhez, kiesel a játékból!',
 10:'Ragadd meg az alkalmat, és még mielőtt eltennéd magad holnapra, igazítsd ki a költségvetési terved! Aggasztóan kevés van az egyik zsebben és túl sok a másikban? Most korrigálhatsz.',
 20:'A vonaton ülve jutott egy kis időd a pénzügyeid áttekintésére. Ha szeretnéd, most ismét kiigazíthatod a költségvetési terved!'
 };
+var aK={
+1:'Élelmiszer',2:'Lakásfenntartás',3:'közlekedés',4:'Szórakozás',5:'Megtakarítás'
+}
+
