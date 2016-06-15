@@ -36,6 +36,6 @@ var aV={
 20:'A vonaton ülve jutott egy kis időd a pénzügyeid áttekintésére. Ha szeretnéd, most ismét kiigazíthatod a költségvetési terved!'
 };
 var aK={
-1:'Élelmiszer',2:'Lakásfenntartás',3:'közlekedés',4:'Szórakozás',5:'Megtakarítás'
+1:'az Élelmiszer',2:'a Lakásfenntartás',3:'a Közlekedés',4:'a Szórakozás',5:'a Megtakarítás'
 }
 

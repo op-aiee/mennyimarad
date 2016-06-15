@@ -46,12 +46,14 @@
       if (nap==0){
         $('#jatek_leiras').hide();
         $('.webform-component--tabla--kasszak--uj-bevetel').hide();
-        $('fieldset.webform-component--tabla').show();
+        $('#szoveg').hide();
         $('fieldset.webform-component--tabla--jatekter').hide();
+        $('fieldset.webform-component--tabla').show();
         $('div.webform-component--tabla--kasszak--kassza-leiras').text(aV[0]);
       } else {
         //bábu kiírás
         //$('#babu').css('position','absolute').css('top',1610).css('left',247+(nap-1)*60);
+        $('.webform-component--tabla--szoveg').show();
         if (nap>1 && beker<2){
           var fizetes=parseInt($('#edit-submitted-tabla-kasszak-fizetes').val());
           var kasszassz=aSz[nap-1][0];
@@ -65,19 +67,25 @@
             $('#edit-submitted-tabla-kasszak-fizetes').val(fizetes).prop('disabled',false);
             $('input[id^="edit-submitted-tabla-kasszak-kasszak-csop-kassza"]').prop('disabled',false);
             $('fieldset.webform-component--tabla--jatekter').hide();
-            $('div.webform-component--tabla--kasszak--kassza-leiras').text(aV[0]);            
+            $('.webform-component--tabla--szoveg').hide();
+            $('div.webform-component--tabla--kasszak--kassza-leiras').text(aV[0]);
+            var gombtext='Szétosztottam a bevételt';
+            $('#tovabb').text(gombtext);
             beker=1;
           } else if (((nap-1) % 10)==0){
             $('fieldset.webform-component--tabla--jatekter').hide();
             $('div.webform-component--tabla--kasszak--kassza-leiras').text(aV[nap-1]);
             $('input[id^="edit-submitted-tabla-kasszak-kasszak-csop-kassza"]').prop('disabled',false);
             $('#edit-submitted-tabla-kasszak-fizetes').prop('disabled',false);
+            var gombtext='Szétosztottam a fizetést';
+            $('#tovabb').text(gombtext);
+            $('.webform-component--tabla--szoveg').hide();
             beker=1;
           } else {
+            $('.webform-component--tabla--szoveg').show();
             $('#edit-submitted-tabla-kasszak-fizetes').prop('disabled',true);
             $('input[id^="edit-submitted-tabla-kasszak-kasszak-csop-kassza"]').prop('disabled',true);
             if (kasszaertek-szamertek>=0){
-              //$('#tovabb').text('Kifizetem '+aK[kasszassz]+' zsebből');
               $('#edit-submitted-tabla-kasszak-fizetes').val(fizetes-szamertek);
               $('#edit-submitted-tabla-kasszak-kasszak-csop-kassza'+kasszassz).val(kasszaertek-szamertek).trigger('change');
             } else if (megtakertek-szamertek+kasszaertek>=0){
@@ -106,11 +114,14 @@
           $('fieldset.webform-component--tabla--jatekter').show();
           $('#nap').text(nap).html('<img src="/sites/default/files/jatekok/mennyimarad/gamebg/gamebg'+nap+'.png"/>');
           //szöveg
+          var kasszassz=aSz[nap][0];
+          var gombtext=(kasszassz==0 ? 'Szétosztom a bevételt' : 'Kifizetem '+aK[kasszassz]+' zsebből')
           var sz=aSz[nap][1];
           var szam=Math.ceil(Math.random()*3);
-          var szamertek=aSz[nap][1+szam];
+          var szamertek=aSz[nap][1+szam];          
           szamertek_elozo=szamertek;
-          $('#szoveg').html('<h3>'+nap+'. nap</h3>'+'<img class="napikon" src="/sites/default/files/jatekok/mennyimarad/napok/mezo'+nap+'.png"/>'+'<p class"napitext">'+sz.replace('<szam>','<span class="auto">'+szamertek+'</span>')+'</p>');
+          $('#tovabb').text(gombtext);
+          $('#szoveg').show().html('<h3>'+nap+'. nap</h3>'+'<img class="napikon" src="/sites/default/files/jatekok/mennyimarad/napok/mezo'+nap+'.png"/>'+'<p class"napitext">'+sz.replace('<szam>','<span class="auto">'+szamertek+'</span>')+'</p>');
         } 
       }
     });
