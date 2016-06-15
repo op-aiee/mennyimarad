@@ -19,7 +19,7 @@ var aSz={
 18:[2,'Derült égből villámcsapás: hazatérve feltűnik, hogy teljesen kihűlt a lakás. Nem csoda, hiszen nem megy a cirkó. Ha nem megy, meg kell javítani. „Teljesen tönkrement az elektronika” – mondja pár órával később a gázszerelő, csupa együttérzéssel a hangjában. „A csere <szam> forint lesz” – teszi hozzá.',10000,15000,20000],
 19:[4,'A hónap második felében egyre kevesebb „kedved” van a hétvégi bulizáshoz. Ma inkább csak hazamész, rendelsz valami finomat és megnézel egy filmet. Mindezt megúszod <szam> forintból.',1500,2000,2500],
 20:[3,'Ma osztálytalálkozóra vagy hivatalos, mégpedig szülővárosodba, ami nincs épp közel. Vonatköltség (oda-vissza), fogyasztás a szórakozóhelyen, stb. Még jó, hogy szüleid nem kérnek pénzt a szállásért! A hétvége összesen <szam> forintodba került!',4000,5000,6000],
-21:[1,'Ez a vasárnap kivételes, szinte valódi ünnep: ma nem költöttél semmire!',0,0,0],
+21:[6,'Ez a vasárnap kivételes, szinte valódi ünnep: ma nem költöttél semmire!',0,0,0],
 22:[2,'Reggel, a lakásból kilépve belebotlasz a közös képviselőbe, aki a közösköltség felől érdeklődik. „Már befizettem” – vágod rá. „Igen, legutóbb a két hónappal ezelőttit” – kontrázik, és innen nincs tovább: fizess a két hónapért <szam> forintot.',8000,8000,8000],
 23:[2,'Hazatérve kinyitod a postaládát, és ott vicsorog rád a gázszámla. Válaszul te is szúrós szemmel kezded méregetni, de mikor kinyitod a borítékot és meglátod az összeget, már tudod: legyőztek! Fizess <szam> forintot',8000,10000,15000],
 24:[1,'Enni a hónap második felében is muszáj – győzködöd magad, majd el is indulsz a boltba bevásárolni. Igyekszel a lényegre szorítkozni, így csak <szam> forintot fizetsz.',2000,3000,4000],
@@ -36,6 +36,6 @@ var aV={
 20:'A vonaton ülve jutott egy kis időd a pénzügyeid áttekintésére. Ha szeretnéd, most ismét kiigazíthatod a költségvetési terved!'
 };
 var aK={
-1:'az Élelmiszer',2:'a Lakásfenntartás',3:'a Közlekedés',4:'a Szórakozás',5:'a Megtakarítás'
+1:'az Élelmiszer',2:'a Lakásfenntartás',3:'a Közlekedés',4:'a Szórakozás',5:'a Megtakarítás',6:'Tovább',
 }
 
