@@ -18,10 +18,10 @@
       var fizetes=parseInt($('input[id="edit-submitted-tabla-kasszak-fizetes"]').val());
       var ossz=kasszakosszesen();
       if (ossz>fizetes){
-        alert('A kasszák összege nagyobb, mint a fizetés!');
+        alert('A kasszák összege nagyobb, mint a fizetés! Ellenőrizd a költségvetési terved!');
         hiba=1;
       } else if (ossz!=fizetes){
-        alert('A kasszák összege nem egyenlő a fizetéssel!');
+        alert('A kasszák összege nem egyenlő a fizetéssel! Ellenőrizd a költségvetési terved!');
         hiba=1;
       }
       return hiba;
@@ -93,7 +93,7 @@
               $('#edit-submitted-tabla-kasszak-kasszak-csop-kassza'+kasszassz).val(0);
               $('#edit-submitted-tabla-kasszak-kasszak-csop-kassza5').val(megtakertek-szamertek+kasszaertek).trigger('change');
             } else {
-              alert('Kiestél!');
+              alert('„Minden zsebed kiürült és még a megtakarításod is elfogyott. Valószínűleg nem jól osztottad be a pénzed. Kattints az OK-ra és kezdd újra a játékot!');
               window.location.href ='/mennyi-marad-zsebedben';
               return;
             }            
