@@ -33,7 +33,7 @@
     kasszaellenorzes();
     $('#tovabb').click(function(){
       if (beker==0){
-        if (nap==0 && kasszaellenorzes()==1){
+        if (nap==1 && kasszaellenorzes()==1){
             return;
         }
         nap++;
