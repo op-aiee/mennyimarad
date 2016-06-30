@@ -31,7 +31,8 @@
     });
     //indulásnál számolja az összesent
     fizetes=150000;
-    $('#edit-submitted-tabla-kasszak-fizetes').val(fizetes);
+    $('#edit-submitted-tabla-kasszak-fizetes').val(fizetes).prop('disabled',true);
+    $('#edit-submitted-tabla-kasszak-uj-bevetel').prop('disabled',true);
     //kasszaellenorzes();
     $('#tovabb').click(function(){
       if (beker==0){
@@ -57,7 +58,8 @@
         //bábu kiírás
         //$('#babu').css('position','absolute').css('top',1610).css('left',247+(nap-1)*60);
         $('.webform-component--tabla--szoveg').show();
-        $('#edit-submitted-tabla-kasszak-fizetes').prop('disabled',true);
+        //$('#edit-submitted-tabla-kasszak-fizetes').prop('disabled',true);
+        $('.webform-component--tabla--kasszak--fizetes').hide();
         if (nap>1 && beker<2){
           var fizetes=parseInt($('#edit-submitted-tabla-kasszak-fizetes').val());
           var kasszassz=aSz[nap-1][0];
@@ -69,7 +71,7 @@
             fizetes+=szamertek;
             $('.webform-component--tabla--kasszak--uj-bevetel').show();
             $('#edit-submitted-tabla-kasszak-uj-bevetel').val(szamertek);
-            $('#edit-submitted-tabla-kasszak-fizetes').val(fizetes).prop('disabled',false);
+            $('#edit-submitted-tabla-kasszak-fizetes').val(fizetes);
             $('input[id^="edit-submitted-tabla-kasszak-kasszak-csop-kassza"]').prop('disabled',false);
             $('fieldset.webform-component--tabla--jatekter').hide();
             $('.webform-component--tabla--szoveg').hide();
@@ -79,7 +81,7 @@
             beker=1;
           } else {
             $('.webform-component--tabla--szoveg').show();
-            $('#edit-submitted-tabla-kasszak-fizetes').prop('disabled',true);
+            //$('#edit-submitted-tabla-kasszak-fizetes').prop('disabled',true);
             $('input[id^="edit-submitted-tabla-kasszak-kasszak-csop-kassza"]').prop('disabled',true);
             if (kasszaertek-szamertek>=0){
               $('#edit-submitted-tabla-kasszak-fizetes').val(fizetes-szamertek);
@@ -99,7 +101,7 @@
             $('fieldset.webform-component--tabla--jatekter').hide();
             $('div.webform-component--tabla--kasszak--kassza-leiras').text(aV[nap-1]);
             $('input[id^="edit-submitted-tabla-kasszak-kasszak-csop-kassza"]').prop('disabled',false);
-            $('#edit-submitted-tabla-kasszak-fizetes').prop('disabled',false);
+            //$('#edit-submitted-tabla-kasszak-fizetes').prop('disabled',false);
             var gombtext='Szétosztottam a fizetést';
             $('#tovabb').text(gombtext);
             $('.webform-component--tabla--szoveg').hide();
@@ -108,7 +110,7 @@
         } else {
           $('.webform-component--tabla--kasszak--uj-bevetel').hide();
           $('#edit-submitted-tabla-kasszak-uj_bevetel').val(0);
-          $('#edit-submitted-tabla-kasszak-fizetes').prop('disabled',true);
+          //$('#edit-submitted-tabla-kasszak-fizetes').prop('disabled',true);
           $('input[id^="edit-submitted-tabla-kasszak-kasszak-csop-kassza"]').prop('disabled',true);
           beker=0;
         }
