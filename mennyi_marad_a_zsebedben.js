@@ -102,7 +102,7 @@
             $('div.webform-component--tabla--kasszak--kassza-leiras').text(aV[nap-1]);
             $('input[id^="edit-submitted-tabla-kasszak-kasszak-csop-kassza"]').prop('disabled',false);
             //$('#edit-submitted-tabla-kasszak-fizetes').prop('disabled',false);
-            var gombtext='Szétosztottam a fizetést';
+            var gombtext='Kész a tervem, tobább lépek';
             $('#tovabb').text(gombtext);
             $('.webform-component--tabla--szoveg').hide();
             beker=1;
