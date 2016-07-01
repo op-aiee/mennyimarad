@@ -18,10 +18,10 @@
       var fizetes=parseInt($('input[id="edit-submitted-tabla-kasszak-fizetes"]').val());
       var ossz=kasszakosszesen();
       if (ossz>fizetes){
-        alert('A kasszák összege nagyobb, mint a fizetés! Ellenőrizd a költségvetési terved!');
+        jAlert('A kasszák összege nagyobb, mint a fizetés! Ellenőrizd a költségvetési terved!', 'Csak óvatosan!');
         hiba=1;
       } else if (ossz!=fizetes){
-        alert('A kasszák összege nem egyenlő a fizetéssel! Ellenőrizd a költségvetési terved!');
+        jAlert('A kasszák összege nem egyenlő a fizetéssel! Ellenőrizd a költségvetési terved!', 'Figyelem');
         hiba=1;
       }
       return hiba;
@@ -87,12 +87,12 @@
               $('#edit-submitted-tabla-kasszak-fizetes').val(fizetes-szamertek);
               $('#edit-submitted-tabla-kasszak-kasszak-csop-kassza'+kasszassz).val(kasszaertek-szamertek).trigger('change');
             } else if (megtakertek-szamertek+kasszaertek>=0){
-              alert('Vigyázz! '+kasszanev+'-kasszád kiürült, ezért csak a megtakarításodból tudtad rendezni a tartozásod. Ha ez is elfogy, nagy bajban leszel!');
+              jAlert('Vigyázz! '+kasszanev+'-kasszád kiürült, ezért csak a megtakarításodból tudtad rendezni a tartozásod. Ha ez is elfogy, nagy bajban leszel!', 'Csak óvatosan!');
               $('#edit-submitted-tabla-kasszak-fizetes').val(fizetes-szamertek);
               $('#edit-submitted-tabla-kasszak-kasszak-csop-kassza'+kasszassz).val(0);
               $('#edit-submitted-tabla-kasszak-kasszak-csop-kassza5').val(megtakertek-szamertek+kasszaertek).trigger('change');
             } else {
-              alert('„Minden zsebed kiürült és még a megtakarításod is elfogyott. Valószínűleg nem jól osztottad be a pénzed. Kattints az OK-ra és kezdd újra a játékot!');
+              jAlert('„Minden zsebed kiürült és még a megtakarításod is elfogyott. Valószínűleg nem jól osztottad be a pénzed. Kattints az OK-ra és kezdd újra a játékot!','Kiestél! :(');
               window.location.href ='/mennyi-marad-zsebedben';
               return;
             }            
@@ -115,7 +115,7 @@
           beker=0;
         }
         if (nap==31){
-          alert('A játéknak vége! Gratulálunk, sikeresen teljesítetted a feladatot!');          
+          jAlert('A játéknak vége! Gratulálunk, sikeresen teljesítetted a feladatot!', 'Gratulálunk!');          
           window.location.href ='/mennyi-marad-zsebedben';
           return;
         }
