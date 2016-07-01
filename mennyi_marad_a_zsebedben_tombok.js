@@ -32,7 +32,7 @@ var aSz={
 };
 var aV={
 0:'Dönts a legjobb belátásod szerint, és oszd szét a fizetésed az öt kategória közt! Ne feledd: ha olyan kiadásod keletkezik, amit nem tudsz kifizetni a megfelelő zsebből, és még a megtakarításod is kevés a tartozás rendezéséhez, kiesel a játékból!',
-10:'Ragadd meg az alkalmat, és még mielőtt eltennéd magad holnapra, igazítsd ki a költségvetési terved! Aggasztóan kevés van az egyik zsebben és túl sok a másikban? Most korrigálhatsz. '<br/>' "<button type='button'>Módosítom a tervet!</button>", "<button type='button'>Jó a tervem, inkább tovább lépek!</button>"',
+10:'Ragadd meg az alkalmat, és még mielőtt eltennéd magad holnapra, igazítsd ki a költségvetési terved! Aggasztóan kevés van az egyik zsebben és túl sok a másikban? Most korrigálhatsz.',
 20:'A vonaton ülve jutott egy kis időd a pénzügyeid áttekintésére. Ha szeretnéd, most ismét kiigazíthatod a költségvetési terved!'
 };
 var aK={
