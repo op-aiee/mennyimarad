@@ -29,11 +29,22 @@
     $('input[id^="edit-submitted-tabla-kasszak-kasszak-csop-kassza"]').on('change blur',function(){
       kasszakosszesen();
     });
+    var div='<div id="2gomb">Egyik zsebben kevés és túl sok a másikban? Most korrigálhatsz!<button id="modosit" type="button" class="hideit">Módosítom a tervet!</button><button id="nextstep" type="button" class="nextstep">Jó a tervem, inkább tovább lépek!</button></div>';
+    $('.webform-component--tovabb').append(div);
+    $('#2gomb').hide();
+    $('#modosit').click(function(){
+      $('#modosit').hide();
+    });
+    $('#nextstep').click(function(){
+      $('#tovabb').click().show();
+      $('#2gomb').hide();
+    });
+
     //indulásnál számolja az összesent
+    //kasszaellenorzes();
     fizetes=150000;
     $('#edit-submitted-tabla-kasszak-fizetes').val(fizetes).prop('disabled',true);
     $('#edit-submitted-tabla-kasszak-uj-bevetel').prop('disabled',true);
-    //kasszaellenorzes();
     $('#tovabb').click(function(){
       if (beker==0){
         if (nap==0 && kasszaellenorzes()==1){
@@ -98,14 +109,19 @@
             }            
           }
           if (((nap-1) % 10)==0){
+            $('#2gomb').show();
+            $('#modosit').show();
             $('fieldset.webform-component--tabla--jatekter').hide();
             $('div.webform-component--tabla--kasszak--kassza-leiras').text(aV[nap-1]);
             $('input[id^="edit-submitted-tabla-kasszak-kasszak-csop-kassza"]').prop('disabled',false);
             //$('#edit-submitted-tabla-kasszak-fizetes').prop('disabled',false);
             var gombtext='Kész a tervem, tobább lépek';
-            $('#tovabb').text(gombtext);
+            $('#tovabb').text(gombtext).hide();
             $('.webform-component--tabla--szoveg').hide();
             beker=1;
+          } else {
+            $('#tovabb').show();
+            $('#2gomb').hide();
           }
         } else {
           $('.webform-component--tabla--kasszak--uj-bevetel').hide();
