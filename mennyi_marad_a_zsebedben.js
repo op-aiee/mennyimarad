@@ -4,6 +4,13 @@
   var szamertek_elozo;
   $(document).ready(function(){
     $('fieldset.webform-component--tabla').hide();
+    function showAlert(msg, title) {
+      jAlert(msg, title);
+      $("#popup_ok").click(
+        function () {
+          window.location.href ='/mennyi-marad-zsebedben';
+      });   
+    }
     function kasszakosszesen(){
       var ossz=0;
       $('input[id^="edit-submitted-tabla-kasszak-kasszak-csop-kassza"]').each(function(){
@@ -29,15 +36,15 @@
     $('input[id^="edit-submitted-tabla-kasszak-kasszak-csop-kassza"]').on('change blur',function(){
       kasszakosszesen();
     });
-    var div='<div id="2gomb szoveg">Egyik zsebben kevés és túl sok a másikban? Most korrigálhatsz!<br/><button id="modosit" type="button" class="hideit">Módosítom a tervet!</button><button id="nextstep" type="button" class="nextstep">Jó a tervem, inkább tovább lépek!</button></div>';
+    var div='<div id="gomb2" class="changetheplan">Egyik zsebben kevés és túl sok a másikban? Most korrigálhatsz!<br/><button id="modosit" type="button" class="hideit">Módosítom a tervet!</button>&nbsp;<button id="nextstep" type="button" class="nextstep">Jó a tervem, tovább lépek!</button></div>';
     $('.webform-component--tovabb').append(div);
-    $('#2gomb').hide();
+    $('#gomb2').hide();
     $('#modosit').click(function(){
       $('#modosit').hide();
     });
     $('#nextstep').click(function(){
       $('#tovabb').click().show();
-      $('#2gomb').hide();
+      $('#gomb2').hide();
     });
 
     //indulásnál számolja az összesent
@@ -83,6 +90,8 @@
             $('.webform-component--tabla--kasszak--uj-bevetel').show();
             $('#edit-submitted-tabla-kasszak-uj-bevetel').val(szamertek);
             $('#edit-submitted-tabla-kasszak-fizetes').val(fizetes);
+            $('.webform-component--tabla--kasszak--fizetes').show();
+            $('label[for="edit-submitted-tabla-kasszak-fizetes"]').text('Új egyenleg');
             $('input[id^="edit-submitted-tabla-kasszak-kasszak-csop-kassza"]').prop('disabled',false);
             $('fieldset.webform-component--tabla--jatekter').hide();
             $('.webform-component--tabla--szoveg').hide();
@@ -103,13 +112,14 @@
               $('#edit-submitted-tabla-kasszak-kasszak-csop-kassza'+kasszassz).val(0);
               $('#edit-submitted-tabla-kasszak-kasszak-csop-kassza5').val(megtakertek-szamertek+kasszaertek).trigger('change');
             } else {
-              jAlert('„Minden zsebed kiürült és még a megtakarításod is elfogyott. Valószínűleg nem jól osztottad be a pénzed. Kattints az OK-ra és kezdd újra a játékot!','Kiestél! :(');
-              window.location.href ='/mennyi-marad-zsebedben';
+              showAlert('„Minden zsebed kiürült és még a megtakarításod is elfogyott. Valószínűleg nem jól osztottad be a pénzed. Kattints az OK-ra és kezdd újra a játékot!','Kiestél! :(');
               return;
             }            
           }
           if (((nap-1) % 10)==0){
-            $('#2gomb').show();
+            $('.webform-component--tabla--kasszak--fizetes').show();
+            $('label[for="edit-submitted-tabla-kasszak-fizetes"]').text('Aktuális egyenleg');
+            $('#gomb2').show();
             $('#modosit').show();
             $('fieldset.webform-component--tabla--jatekter').hide();
             $('div.webform-component--tabla--kasszak--kassza-leiras').text(aV[nap-1]);
@@ -121,7 +131,7 @@
             beker=1;
           } else {
             $('#tovabb').show();
-            $('#2gomb').hide();
+            $('#gomb2').hide();
           }
         } else {
           $('.webform-component--tabla--kasszak--uj-bevetel').hide();
@@ -131,8 +141,7 @@
           beker=0;
         }
         if (nap==31){
-          jAlert('A játéknak vége! Gratulálunk, sikeresen teljesítetted a feladatot!', 'Gratulálunk!');          
-          window.location.href ='/mennyi-marad-zsebedben';
+          showAlert('A játéknak vége! Gratulálunk, sikeresen teljesítetted a feladatot!', 'Gratulálunk!');
           return;
         }
         if (beker==0){
@@ -146,7 +155,7 @@
           var kasszassz=aSz[nap][0];
           var gombtext=(kasszassz==0 ? 'Szétosztom a bevételt' : (szamertek==0 ? 'Tovább' : 'Kifizetem '+aK[kasszassz]+' zsebből'));
           $('#tovabb').text(gombtext);
-          $('#szoveg').show().html('<h3>'+nap+'. nap</h3>'+'<img class="napikon" src="/sites/default/files/jatekok/mennyimarad/napok/mezo'+nap+'.png"/>'+'<p class"napitext">'+sz.replace('<szam>','<span class="auto">'+szamertek+'</span>')+'</p>');
+          $('#szoveg').show().html('<h3>'+nap+'. nap</h3>'+'<img class="napikon" src="/sites/default/files/jatekok/mennyimarad/napok/mezo'+nap+'.png"/>'+'<p class="napitext">'+sz.replace('<szam>','<span class="auto">'+szamertek+'</span>')+'</p>');
         } 
       }
     });
