@@ -65,6 +65,7 @@
         beker=2;
       }
       if (nap==0){
+	$('#jatek_bevezeto').hide();
         $('#jatek_leiras').hide();
         $('.webform-component--tabla--kasszak--uj-bevetel').hide();
         $('#szoveg').hide();
