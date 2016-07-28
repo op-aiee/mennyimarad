@@ -1,5 +1,5 @@
 <?php
-module_load_include('inc','pi_wf','pi_user');
+//module_load_include('inc','pi_wf','pi_user');
 module_load_include('inc','pi_wf','pi_iskola');
 module_load_include('inc','pi_wf','pi_eredmeny');
 module_load_include('inc','pi_wf','pi_teszt');
@@ -7,7 +7,7 @@ module_load_include('inc','pi_wf','pi_kk');
 drupal_add_js(drupal_get_path('module', 'pi_wf') . '/alerts/jquery.alerts.js');
 drupal_add_css(drupal_get_path('module', 'pi_wf') . '/alerts/jquery.alerts.css');
 
-
+/*
 function pi_wf_menu(){
   $items=array();
   $items['eredmeny/nid/%/sid/%'] = array(
@@ -71,7 +71,7 @@ function pi_wf_menu(){
   );
   return $items;
 }
-
+*/
 function pi_wf_form_alter(&$form, &$form_state,$form_id){
   $teszt=0;
   if ($teszt){
@@ -171,7 +171,7 @@ function pi_wf_form_alter(&$form, &$form_state,$form_id){
       break;
   }
 }
-
+/*
 function pi_wf_webform_submission_presave($node, &$submission) {
   dpm($node,'pi_wf_webform_submission_presave:node');
   dpm($submission,'pi_wf_webform_submission_presave:submission');
@@ -381,6 +381,8 @@ function _pi_wf_send_mail_reg($nid,$email,$tanar=null){
   );
    * 
    */
+
+  /*
   $level=_pi_wf_load_template($nid);
   $body=$level['body'];
   $subject=$level['subject'];
@@ -407,7 +409,7 @@ function _pi_wf_send_mail_reg($nid,$email,$tanar=null){
   );
   dpm($mail,'_pi_wf_send_mail_reg:mail');
 }
-
+*/
 //ajax
 function _pi_wf_oktoberi_jatek_valaszok(){
   $nid=168;
