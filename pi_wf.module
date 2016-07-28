@@ -7,7 +7,7 @@ module_load_include('inc','pi_wf','pi_kk');
 drupal_add_js(drupal_get_path('module', 'pi_wf') . '/alerts/jquery.alerts.js');
 drupal_add_css(drupal_get_path('module', 'pi_wf') . '/alerts/jquery.alerts.css');
 
-/*
+
 function pi_wf_menu(){
   $items=array();
   $items['eredmeny/nid/%/sid/%'] = array(
@@ -71,7 +71,7 @@ function pi_wf_menu(){
   );
   return $items;
 }
-*/
+
 function pi_wf_form_alter(&$form, &$form_state,$form_id){
   $teszt=0;
   if ($teszt){
